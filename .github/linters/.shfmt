@@ -1,0 +1,5 @@
+# shfmt configuration to match super-linter v7.4.0
+-i
+0
+-bn
+-ci

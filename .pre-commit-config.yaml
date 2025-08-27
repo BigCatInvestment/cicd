@@ -1,0 +1,97 @@
+---
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.9
+    hooks:
+      - id: ruff
+        args: [ --fix ]
+
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+        language_version: python3
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.2.0
+    hooks:
+      - id: flake8
+        args: [--config, .github/linters/.flake8]
+
+  - repo: https://github.com/pycqa/isort
+    rev: 6.0.1
+    hooks:
+      - id: isort
+        name: isort (python)
+        args: [--settings-path, .github/linters/.isort.cfg]
+
+  - repo: https://github.com/pycqa/pylint
+    rev: v3.3.7
+    hooks:
+      - id: pylint
+        args: [--rcfile=.github/linters/.python-lint]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.15.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-requests, types-boto3]
+        args: [--exclude=src/lambda-app/metrics/cloudwatch.py, --ignore-missing-imports]
+
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint
+        args: [--config, .github/linters/.hadolint.yaml]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+
+  - repo: https://github.com/bridgecrewio/checkov.git
+    rev: 3.2.417
+    hooks:
+      - id: checkov
+        args: [--quiet, --config, .github/linters/.checkov.yaml]
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.7
+    hooks:
+      - id: actionlint
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.88.4
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_docs
+      - id: terraform_tflint
+
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        args: [-c=.github/linters/.yaml-lint.yml]
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+
+  - repo: https://github.com/maxwinterstein/shfmt-py
+    rev: v3.11.0.2
+    hooks:
+      - id: shfmt
+        args: [-f, .github/linters/.shfmt]
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.44.0
+    hooks:
+      - id: markdownlint
+
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.12.0-2
+    hooks:
+      - id: shfmt
+        args: [-f, .github/linters/.shfmt]

@@ -1,0 +1,11 @@
+[MASTER]
+ignore-patterns=test_.*?py
+
+[MESSAGES CONTROL]
+
+# Ignoring Import Errors is desired as super-linter
+# does not support installing dependencies as it runs
+disable=import-error,logging-fstring-interpolation
+
+max-args=8
+max-positional-arguments=8

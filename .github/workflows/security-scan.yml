@@ -1,0 +1,29 @@
+name: Security Scan
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions: read-all
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: read
+      pull-requests: read
+      # To report GitHub Actions status checks
+      statuses: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for better analysis
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: SAST Analysis
+        uses: super-linter/super-linter@v7.4.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FIX_YAML_PRETTIER: true

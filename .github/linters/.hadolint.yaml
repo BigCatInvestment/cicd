@@ -1,0 +1,32 @@
+---
+# Hadolint configuration file
+# Compatible with super-linter v7.4.0
+
+# Set failure threshold
+failure-threshold: warning
+
+# Output format
+format: tty
+
+# Rules to ignore (if needed)
+ignored: []
+
+# Override rule severities
+override:
+  warning:
+    - DL3013  # Pin versions in pip
+    - DL3042  # Avoid cache directory with pip
+  info:
+    - DL3059  # Multiple consecutive RUN instructions
+
+# Trusted registries
+trustedRegistries:
+  - docker.io
+  - python
+  - public.ecr.aws
+
+# Strict labels checking
+strict-labels: false
+
+# Disable inline ignore pragmas
+disable-ignore-pragma: false

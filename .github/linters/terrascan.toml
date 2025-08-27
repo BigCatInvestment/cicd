@@ -1,0 +1,13 @@
+[rules]
+    # scan rules (list of rules to scan)
+    # adding rules here will override rules in the policy path
+    # scan-rules = [
+    #     "AWS.S3Bucket.DS.High.1043",
+    #     "AWS.S3Bucket.IAM.High.0370"
+    # ]
+
+    # skip rules (list of rules to skip)
+    skip-rules = [
+        "AC_AWS_0228",  # Security Groups - Unrestricted Specific Ports - (HTTP,80)
+        "AC_AWS_0484"  # Lambda function uses IAM role, no need to attach policy to it
+    ]
