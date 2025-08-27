@@ -19,11 +19,13 @@ locals {
 }
 
 resource "aws_security_group" "alb" {
-  count = var.alb_enabled ? 1 : 0
+  count       = var.alb_enabled ? 1 : 0
   name        = "${var.name}-${var.environment}-alb-sg"
   description = "Allow inbound traffic for ALB to ECS tasks"
   vpc_id      = data.aws_vpc.main.id
 
+  #checkov:skip=CKV_AWS_260:ALB needs a broader inbound access
+  #checkov:skip=CKV2_AWS_5:Security group is attached to ALB in the same module
   # Dynamic ingress rules
   dynamic "ingress" {
     for_each = var.alb_security_group_ingress_rules
@@ -57,7 +59,7 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_lb" "main" {
-  count = var.alb_enabled ? 1 : 0
+  count              = var.alb_enabled ? 1 : 0
   name               = "${var.name}-${var.environment}"
   internal           = false
   load_balancer_type = "application"
@@ -67,7 +69,9 @@ resource "aws_lb" "main" {
   //checkov:skip=CKV_AWS_91: not use access logs for now
   //checkov:skip=CKV2_AWS_28: not use WAF for now
   drop_invalid_header_fields = true
-  depends_on                 = [aws_security_group.alb[0]]
+
+  depends_on = [aws_security_group.alb[0]]
+
   tags = {
     Environment = var.environment
     Name        = "${var.name}-${var.environment}"

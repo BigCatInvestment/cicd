@@ -54,18 +54,6 @@ variable "desired_count" {
   default     = 1
 }
 
-variable "pagerduty_sns_topic_arn" {
-  type        = string
-  description = "The ARN of the PagerDuty SNS topic"
-  default     = ""
-}
-
-variable "pagerduty_enabled" {
-  type        = bool
-  description = "Whether to enable PagerDuty"
-  default     = true
-}
-
 variable "alb_enabled" {
   type        = bool
   description = "Whether to enable ALB"
@@ -74,21 +62,21 @@ variable "alb_enabled" {
 
 variable "security_group_ingress_rules" {
   type = list(object({
-    from_port   = number
-    to_port     = number
-    protocol    = string
-    cidr_blocks = list(string)
-    description = string
+    from_port       = number
+    to_port         = number
+    protocol        = string
+    cidr_blocks     = list(string)
+    description     = string
     security_groups = list(string)
   }))
   description = "List of ingress rules for ECS tasks security group"
   default = [
     {
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      cidr_blocks = []
-      description = "Allow inbound traffic from ALB to ECS tasks"
+      from_port       = 80
+      to_port         = 80
+      protocol        = "tcp"
+      cidr_blocks     = []
+      description     = "Allow inbound traffic from ALB to ECS tasks"
       security_groups = []
     }
   ]

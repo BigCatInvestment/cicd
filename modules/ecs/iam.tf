@@ -47,7 +47,7 @@ resource "aws_iam_role_policy" "ecs_task_ecr_policy" {
           "ecr:PutImage",
           "ecr:BatchGetImage"
         ]
-        Resource = "arn:aws:ecr:${local.region}:${var.ecr_account_id}:repository/${local.repo_name}*"
+        Resource = "arn:aws:ecr:${var.region}:${var.ecr_account_id}:repository/${var.repo_name}*"
       }
     ]
   })
