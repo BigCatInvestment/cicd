@@ -19,9 +19,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Full history for better analysis
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
       - name: SAST Analysis
         uses: super-linter/super-linter@v7.4.0
         env:
