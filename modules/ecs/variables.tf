@@ -159,3 +159,15 @@ variable "wait_for_steady_state" {
   description = "Whether to wait for the steady state of the deployment"
   default     = true
 }
+
+variable "secrets_manager_enabled" {
+  type        = bool
+  description = "Whether to enable Secrets Manager permissions"
+  default     = false
+}
+
+variable "secrets_manager_resources" {
+  type        = list(string)
+  description = "List of Secrets Manager ARNs to grant access to"
+  default     = []
+}
