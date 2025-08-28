@@ -153,3 +153,9 @@ variable "deployment_circuit_breaker_rollback" {
   description = "Whether to rollback the deployment if the circuit breaker is triggered"
   default     = true
 }
+
+variable "wait_for_steady_state" {
+  type        = bool
+  description = "Whether to wait for the steady state of the deployment"
+  default     = true
+}

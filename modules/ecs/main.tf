@@ -117,7 +117,7 @@ resource "aws_ecs_service" "main" {
     rollback = var.deployment_circuit_breaker_rollback
   }
 
-  wait_for_steady_state = true
+  wait_for_steady_state = var.wait_for_steady_state
 
   depends_on = [aws_cloudwatch_log_group.main, aws_ecs_cluster.main, aws_ecs_task_definition.main,
   aws_security_group.ecs_tasks]
