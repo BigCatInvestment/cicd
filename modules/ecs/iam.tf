@@ -53,6 +53,27 @@ resource "aws_iam_role_policy" "ecs_task_ecr_policy" {
   })
 }
 
+# Add Secrets Manager permissions to the task role
+resource "aws_iam_role_policy" "ecs_task_secrets_policy" {
+  count = var.secrets_manager_enabled ? 1 : 0
+  name  = "${var.name}-${var.environment}-task-secrets-policy"
+  role  = aws_iam_role.ecs_task_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ]
+        Resource = var.secrets_manager_resources
+      }
+    ]
+  })
+}
+
 # IAM Role for ECS Task
 resource "aws_iam_role" "ecs_task_role" {
   name = "${var.name}-${var.environment}-task-role"
