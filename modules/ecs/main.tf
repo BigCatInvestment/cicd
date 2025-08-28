@@ -112,6 +112,11 @@ resource "aws_ecs_service" "main" {
     assign_public_ip = false
   }
 
+  deployment_circuit_breaker {
+    enable   = var.deployment_circuit_breaker_enabled
+    rollback = var.deployment_circuit_breaker_rollback
+  }
+
   wait_for_steady_state = true
 
   depends_on = [aws_cloudwatch_log_group.main, aws_ecs_cluster.main, aws_ecs_task_definition.main,
