@@ -141,3 +141,21 @@ variable "alb_security_group_egress_rules" {
     }
   ]
 }
+
+variable "deployment_circuit_breaker_enabled" {
+  type        = bool
+  description = "Whether to enable deployment circuit breaker"
+  default     = true
+}
+
+variable "deployment_circuit_breaker_rollback" {
+  type        = bool
+  description = "Whether to rollback the deployment if the circuit breaker is triggered"
+  default     = true
+}
+
+variable "wait_for_steady_state" {
+  type        = bool
+  description = "Whether to wait for the steady state of the deployment"
+  default     = true
+}
