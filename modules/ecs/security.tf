@@ -1,7 +1,9 @@
 # Security Group for ECS Tasks
+
+
 resource "aws_security_group" "ecs_tasks" {
   name        = "${var.name}-${var.environment}-sg"
-  description = "Allow inbound traffic for ECS tasks from ALB"
+  description = "${var.name} ${var.environment} security group"
   vpc_id      = data.aws_vpc.main.id
 
   # Dynamic ingress rules
@@ -12,7 +14,7 @@ resource "aws_security_group" "ecs_tasks" {
       to_port         = ingress.value.to_port
       protocol        = ingress.value.protocol
       cidr_blocks     = ingress.value.cidr_blocks
-      security_groups = ingress.value.security_groups
+      security_groups = var.alb_enabled ? [aws_security_group.alb[0].id] : ingress.value.security_groups  # TODO: check if this works
       description     = ingress.value.description
     }
   }
