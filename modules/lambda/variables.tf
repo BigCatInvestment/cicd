@@ -48,3 +48,19 @@ variable "secrets_manager_arns" {
   type        = list(string)
   default     = []
 }
+
+variable "subnet_type" {
+  description = "Type of subnets to use for Lambda VPC configuration. Options: 'private', 'public', or 'none' to disable VPC"
+  type        = string
+  default     = "private"
+  validation {
+    condition     = contains(["private", "public", "none"], var.subnet_type)
+    error_message = "subnet_type must be one of: private, public, none"
+  }
+}
+
+variable "enable_vpc" {
+  description = "Whether to enable VPC configuration for the Lambda function"
+  type        = bool
+  default     = true
+}

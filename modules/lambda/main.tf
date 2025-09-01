@@ -30,6 +30,17 @@ data "aws_subnets" "private" {
   }
 }
 
+data "aws_subnets" "public" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.main.id]
+  }
+  filter {
+    name   = "tag:Name"
+    values = ["*public*"]
+  }
+}
+
 // Security group for Lambda
 resource "aws_security_group" "lambda_sg" {
   name_prefix = "${var.repo_name}-lambda-${var.environment}-"
@@ -82,10 +93,15 @@ resource "aws_lambda_function" "main" {
   ephemeral_storage {
     size = var.ephemeral_storage_size
   }
-  vpc_config {
-    subnet_ids         = data.aws_subnets.private.ids
-    security_group_ids = [aws_security_group.lambda_sg.id]
+  
+  dynamic "vpc_config" {
+    for_each = var.enable_vpc ? [1] : []
+    content {
+      subnet_ids         = var.subnet_type == "private" ? data.aws_subnets.private.ids : data.aws_subnets.public.ids
+      security_group_ids = [aws_security_group.lambda_sg.id]
+    }
   }
+  
   tags = {
     Environment = var.environment
     Repo        = var.repo_name
@@ -95,5 +111,4 @@ resource "aws_lambda_function" "main" {
     create = "20m"
   }
   depends_on = [aws_cloudwatch_log_group.lambda, aws_iam_role.lambda, aws_iam_role_policy.logs, aws_iam_role_policy_attachment.lambda_vpc]
-
 }
