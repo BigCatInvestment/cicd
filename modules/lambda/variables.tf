@@ -36,3 +36,15 @@ variable "ephemeral_storage_size" {
   description = "The size of the ephemeral storage"
   default     = 512
 }
+
+variable "enable_secrets_manager" {
+  description = "Whether to enable Secrets Manager access for the Lambda function"
+  type        = bool
+  default     = false
+}
+
+variable "secrets_manager_arns" {
+  description = "List of Secrets Manager ARNs that the Lambda function can access"
+  type        = list(string)
+  default     = []
+}

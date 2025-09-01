@@ -12,6 +12,15 @@ data "aws_iam_policy_document" "metrics" {
   }
 }
 
+data "aws_iam_policy_document" "secrets" {
+  count = var.enable_secrets_manager ? 1 : 0
+  
+  statement {
+    actions   = ["secretsmanager:GetSecretValue"]
+    resources = var.secrets_manager_arns
+  }
+}
+
 resource "aws_iam_role" "lambda" {
   name        = "${var.repo_name}-lambda-${var.environment}"
   description = "The role for lambda function of ${var.repo_name} repo"
@@ -55,4 +64,11 @@ resource "aws_iam_role_policy_attachment" "lambda_vpc" {
 resource "aws_iam_role_policy_attachment" "lambda_ecr" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   role       = aws_iam_role.lambda.id
+}
+
+resource "aws_iam_role_policy" "secrets" {
+  count  = var.enable_secrets_manager ? 1 : 0
+  name   = "${var.repo_name}-lambda-${var.environment}-secrets"
+  role   = aws_iam_role.lambda.id
+  policy = data.aws_iam_policy_document.secrets[0].json
 }
